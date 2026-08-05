@@ -21,7 +21,7 @@
 前提：Docker / Docker Compose がインストールされていること
 
 ```bash
-git clone <このリポジトリのURL>
+https://github.com/Tomoya-Hisaki/study-log-app
 cd study-log-app
 docker compose up --build
 ```
