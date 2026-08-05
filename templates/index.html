@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>学習記録アプリ（Study Log App）</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📘 学習記録アプリ</h1>
+
+        <section class="card">
+            <h2>学習を記録する</h2>
+            <form action="{{ url_for('add_log') }}" method="post">
+                <label>科目
+                    <input type="text" name="subject" placeholder="例：データベース" required>
+                </label>
+                <label>学習内容
+                    <input type="text" name="content" placeholder="例：正規化の演習問題" required>
+                </label>
+                <label>学習時間（分）
+                    <input type="number" name="minutes" min="1" required>
+                </label>
+                <button type="submit">記録する</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>科目別 合計学習時間</h2>
+            {% if summary %}
+            <table>
+                <tr><th>科目</th><th>合計時間（分）</th><th>記録件数</th></tr>
+                {% for row in summary %}
+                <tr>
+                    <td>{{ row['subject'] }}</td>
+                    <td>{{ row['total_minutes'] }}</td>
+                    <td>{{ row['count'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p class="empty">まだ記録がありません。</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>学習履歴</h2>
+            {% if logs %}
+            <table>
+                <tr><th>日時</th><th>科目</th><th>内容</th><th>時間（分）</th><th></th></tr>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log['created_at'] }}</td>
+                    <td>{{ log['subject'] }}</td>
+                    <td>{{ log['content'] }}</td>
+                    <td>{{ log['minutes'] }}</td>
+                    <td>
+                        <form action="{{ url_for('delete_log', log_id=log['id']) }}" method="post">
+                            <button type="submit" class="delete">削除</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p class="empty">まだ記録がありません。</p>
+            {% endif %}
+        </section>
+    </div>
+</body>
+</html>

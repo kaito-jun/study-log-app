@@ -1,0 +1,10 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - study-log-data:/app/data
+
+volumes:
+  study-log-data:
